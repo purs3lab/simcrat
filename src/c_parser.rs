@@ -847,7 +847,7 @@ fn find_lib_spans(parse: &Parse) -> Vec<Span> {
                 .split(' ')
                 .find_map(|s| s.strip_prefix('"'))
                 .expect(line);
-            if path.starts_with('/') && !path.starts_with("/usr/include/arpa") {
+            if path.starts_with("/usr") && !path.starts_with("/usr/include/arpa") {
                 lib_start.get_or_insert(pos);
             } else if let Some(start) = lib_start.take() {
                 lib_spans.push(Span::span(start, pos));
@@ -1138,9 +1138,9 @@ struct CompileCommand {
 
 impl CompileCommand {
     fn preprocess(&self) -> Option<Preprocessed> {
-        if self.arguments[0] != "cc" {
-            return None;
-        }
+        // if self.arguments[0] != "cc" {
+        //     return None;
+        // }
 
         let mut arguments = self.arguments.clone();
         arguments.retain(|x| !x.starts_with("-g") && !x.starts_with("-O"));
